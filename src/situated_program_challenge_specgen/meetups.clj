@@ -10,10 +10,10 @@
     (GET "/" []
       :summary "ミートアップイベント一覧情報の取得"
       :description "現在登録されているミートアップイベントの一覧を取得します。"
-      :return ::spec/meetups)
+      :return spec/meetups-spec)
 
     (GET "/:event-id" []
       :summary "ミートアップイベント情報の取得"
       :path-params [event-id :- ::spec/event-id]
       :description "IDで指定されたミートアップイベントを取得します。"
-      :return ::spec/meetup)))
+      :return spec/meetup-spec)))

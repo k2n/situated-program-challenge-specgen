@@ -1,7 +1,9 @@
 (ns situated-program-challenge-specgen.handler
   (:require [compojure.api.sweet :refer [api context GET POST]]
             [muuntaja.core :as muuntaja]
-            [situated-program-challenge-specgen.meetups :refer [meetups-routes]]))
+            [situated-program-challenge-specgen
+             [meetups :refer [meetups-routes]]
+             [members :refer [members-routes]]]))
 
 (def app
   (api
@@ -10,11 +12,14 @@
      :spec "/swagger.json"
      :data {:info {:title "Situated Program Challenge"}
             :tags [{:name "meetups"
-                    :description "ミートアップエンティティ"}]}}
+                    :description "ミートアップエンティティ"}
+                   {:name "members"
+                    :description "メンバーエンティティ"}]}}
     :formats (-> muuntaja/default-options
                  (update-in [:formats]
                             dissoc
                             "application/edn"
                             "application/transit+json"
                             "application/transit+msgpack"))}
-   meetups-routes))
+   meetups-routes
+   members-routes))

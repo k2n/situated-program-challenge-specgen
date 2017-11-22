@@ -1,33 +1,70 @@
 (ns situated-program-challenge-specgen.spec
   (:require [clojure.spec.alpha :as s]
-            [spec-tools.spec :as spec]
-            [spec-tools.core :as st]))
+            [spec-tools
+             [core :as st]
+             [data-spec :as ds]
+             [spec :as spec]]))
 
-(s/def ::event-id (st/spec int? {:description "DBが自動採番したID"}))
-(s/def ::title (st/spec string? {:description "イベント名"}))
-(s/def ::email (st/spec string? {:description "Eメールアドレス"}))
-(s/def ::prefecture (st/spec string? {:description "都道府県"}))
-(s/def ::city (st/spec string? {:description "市区町村"}))
-(s/def ::address1 (st/spec string? {:description "丁目番地"}))
-(s/def ::address2 (st/spec string? {:description "建物名"}))
-(s/def ::postal-code (st/spec string? {:description "郵便番号"}))
-(s/def ::venue-id (st/spec int? {:description "DBが自動採番したID"}))
-(s/def ::venue-name (st/spec string? {:description "開催場所名"}))
+(s/def ::event-id     (st/spec int?    {:description "自動採番ID"}))
+(s/def ::title        (st/spec string? {:description "イベント名"}))
+(s/def ::start-at     (st/spec inst?   {:description "開始日時"}))
+(s/def ::end-at       (st/spec inst?   {:description "終了日時"}))
+(s/def ::prefecture   (st/spec string? {:description "都道府県"}))
+(s/def ::city         (st/spec string? {:description "市区町村"}))
+(s/def ::address1     (st/spec string? {:description "丁目番地"}))
+(s/def ::address2     (st/spec string? {:description "建物名"}))
+(s/def ::postal-code  (st/spec string? {:description "郵便番号"}))
+(s/def ::venue-id     (st/spec int?    {:description "自動採番ID"}))
+(s/def ::venue-name   (st/spec string? {:description "開催場所名"}))
+(s/def ::member-id    (st/spec int?    {:description "自動採番ID"}))
+(s/def ::first-name   (st/spec string? {:description "名"}))
+(s/def ::last-name    (st/spec string? {:description "姓"}))
+(s/def ::email        (st/spec string? {:description "Eメールアドレス"}))
 
-(s/def ::address (st/spec (s/keys :req-un [::postal-code
-                                           ::prefecture
-                                           ::city
-                                           ::address1]
-                                  :opt-un [::address2])
-                          {:description "住所"}))
-(s/def ::venue (st/spec (s/keys :req-un [::venue-id
-                                         ::venue-name
-                                         ::address])
-                        {:description "開催場所"}))
-(s/def ::meetup (st/spec (s/keys :req-un [::title
-                                          ::venue])
-                         {:description "ミートアップ"}))
-(s/def ::meetups (st/spec (s/* (s/keys :req-un [::event-id
-                                                ::title
-                                                ::venue]))
-                          {:description "ミートアップス"}))
+(def address {:postal-code        ::postal-code
+              :prefecture         ::prefecture
+              :city               ::city
+              :address1           ::address1
+              (ds/opt :address2)  ::address2})
+
+(def address-spec
+  (ds/spec ::address address
+           {:description "住所"}))
+
+(def venue {:venue-id   ::venue-id
+            :venue-name ::venue-name
+            :address    address-spec})
+
+(def venue-spec
+  (ds/spec ::venue venue
+           {:description "開催場所"}))
+
+(def member {:member-id   ::member-id
+             :first-name  ::first-name
+             :last-name   ::last-name
+             :email       ::email})
+
+(def member-request-spec
+  (ds/spec ::member-request (dissoc member :member-id) {:description "メンバーリクエスト"}))
+
+(def member-spec
+  (ds/spec ::member member {:description "メンバーレスポンス"}))
+
+(def members-spec
+  (ds/spec ::members [member] {:description "メンバーズレスポンス"}))
+
+(def meetup {:event-id    ::event-id
+             :title       ::title
+             :start-at    ::start-at
+             :end-at      ::end-at
+             :venue       venue-spec
+             :members     members-spec})
+
+(def meetup-request-spec
+  (ds/spec ::meetup-request (dissoc meetup :event-id) {:description "ミートアップリクエスト"}))
+
+(def meetup-spec
+  (ds/spec ::meetup meetup {:description "ミートアップレスポンス"}))
+
+(def meetups-spec
+  (ds/spec ::meetups [meetup] {:description "ミートアップスレスポンス"}))
