@@ -5,21 +5,24 @@
              [data-spec :as ds]
              [spec :as spec]]))
 
-(s/def ::event-id     (st/spec int?    {:description "自動採番ID"}))
-(s/def ::title        (st/spec string? {:description "イベント名"}))
-(s/def ::start-at     (st/spec inst?   {:description "開始日時"}))
-(s/def ::end-at       (st/spec inst?   {:description "終了日時"}))
-(s/def ::prefecture   (st/spec string? {:description "都道府県"}))
-(s/def ::city         (st/spec string? {:description "市区町村"}))
-(s/def ::address1     (st/spec string? {:description "丁目番地"}))
-(s/def ::address2     (st/spec string? {:description "建物名"}))
-(s/def ::postal-code  (st/spec string? {:description "郵便番号"}))
-(s/def ::venue-id     (st/spec int?    {:description "自動採番ID"}))
-(s/def ::venue-name   (st/spec string? {:description "開催場所名"}))
-(s/def ::member-id    (st/spec int?    {:description "自動採番ID"}))
-(s/def ::first-name   (st/spec string? {:description "名"}))
-(s/def ::last-name    (st/spec string? {:description "姓"}))
-(s/def ::email        (st/spec string? {:description "Eメールアドレス"}))
+(s/def ::event-id     (st/spec int?      {:description "自動採番ID"}))
+(s/def ::title        (st/spec string?   {:description "イベント名"}))
+(s/def ::start-at     (st/spec inst?     {:description "開始日時"}))
+(s/def ::end-at       (st/spec inst?     {:description "終了日時"}))
+(s/def ::prefecture   (st/spec string?   {:description "都道府県"}))
+(s/def ::city         (st/spec string?   {:description "市区町村"}))
+(s/def ::address1     (st/spec string?   {:description "丁目番地"}))
+(s/def ::address2     (st/spec string?   {:description "建物名"}))
+(s/def ::postal-code  (st/spec string?   {:description "郵便番号"}))
+(s/def ::venue-id     (st/spec int?      {:description "自動採番ID"}))
+(s/def ::venue-name   (st/spec string?   {:description "会場名"}))
+(s/def ::member-id    (st/spec int?      {:description "自動採番ID"}))
+(s/def ::first-name   (st/spec string?   {:description "名"}))
+(s/def ::last-name    (st/spec string?   {:description "姓"}))
+(s/def ::email        (st/spec string?   {:description "Eメールアドレス"}))
+(s/def ::group-id     (st/spec int?      {:description "自動採番ID"}))
+(s/def ::group-name   (st/spec string?   {:description "グループ名"}))
+(s/def ::admin        (st/spec boolean?  {:description "管理者フラグ"}))
 
 (def address {:postal-code        ::postal-code
               :prefecture         ::prefecture
@@ -37,7 +40,13 @@
 
 (def venue-spec
   (ds/spec ::venue venue
-           {:description "開催場所"}))
+           {:description "会場"}))
+
+(def venue-request-spec
+  (ds/spec ::venue-request (dissoc venue :venue-id) {:description "会場"}))
+
+(def venues-spec
+  (ds/spec ::venues [venue] {:description "会場"}))
 
 (def member {:member-id   ::member-id
              :first-name  ::first-name
@@ -61,10 +70,31 @@
              :members     members-spec})
 
 (def meetup-request-spec
-  (ds/spec ::meetup-request (dissoc meetup :event-id) {:description "ミートアップリクエスト"}))
+  (ds/spec ::meetup-request (dissoc meetup :event-id :members) {:description "ミートアップリクエスト"}))
 
 (def meetup-spec
   (ds/spec ::meetup meetup {:description "ミートアップレスポンス"}))
 
 (def meetups-spec
   (ds/spec ::meetups [meetup] {:description "ミートアップスレスポンス"}))
+
+(def group {:group-id     ::group-id
+            :group-name   ::group-name
+            :admin        members-spec
+            :venues       venues-spec
+            :meetups      meetups-spec})
+
+(def group-request-spec
+  (ds/spec ::group-request (-> group
+                               (dissoc :group-id :venues :meetups :admin)
+                               (assoc :admin-member-ids [::member-id])) {:description "グループリクエスト"}))
+
+(def group-spec
+  (ds/spec ::group group {:description "グループレスポンス"}))
+
+(def groups-spec
+  (ds/spec ::groups [group] {:description "グループスレスポンス"}))
+
+(def member-group-join-request-spec
+  (ds/spec ::member-group-join-request-spec {:admin     ::admin}
+           {:description "メンバーグループジョインリクエスト"}))

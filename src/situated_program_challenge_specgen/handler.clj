@@ -2,8 +2,8 @@
   (:require [compojure.api.sweet :refer [api context GET POST]]
             [muuntaja.core :as muuntaja]
             [situated-program-challenge-specgen
-             [meetups :refer [meetups-routes]]
-             [members :refer [members-routes]]]))
+             [members :refer [members-routes]]
+             [groups :refer [groups-routes]]]))
 
 (def app
   (api
@@ -14,12 +14,16 @@
             :tags [{:name "meetups"
                     :description "ミートアップエンティティ"}
                    {:name "members"
-                    :description "メンバーエンティティ"}]}}
+                    :description "メンバーエンティティ"}
+                   {:name "venues"
+                    :description "会場エンティティ"}
+                   {:name "groups"
+                    :description "グループエンティティ"}]}}
     :formats (-> muuntaja/default-options
                  (update-in [:formats]
                             dissoc
                             "application/edn"
                             "application/transit+json"
                             "application/transit+msgpack"))}
-   meetups-routes
+   groups-routes
    members-routes))
