@@ -1,5 +1,6 @@
 (ns situated-program-challenge-specgen.members
   (:require [compojure.api.sweet :refer [context GET POST]]
+            [spec-tools.swagger.core :as swagger]
             [situated-program-challenge-specgen.spec :as spec]))
 
 (def members-routes
@@ -24,14 +25,15 @@
       :body [member-request spec/member-request-spec]
       :return spec/member-spec)
 
-    (POST "/:member-id/:meetup-id" []
-      ;::swagger/responses {400 {:description "参加できませんでした。"}}
+    (POST "/:member-id/meetups/:meetup-id" []
       :summary "ミートアップへの参加"
       :description  "メンバーがミートアップに参加申し込みをします。"
       :return spec/meetup-spec)
 
-    (POST "/:member-id/:group-id" []
+    (POST "/:member-id/groups/:group-id" []
       :summary "グループへの参加"
       :description "メンバーがグループに参加申し込みをします。"
       :body [member-group-join spec/member-group-join-request-spec]
-      :return spec/group-spec)))
+      :return spec/group-spec
+      ;:responses {400 {:description "bad request???"}}
+      )))

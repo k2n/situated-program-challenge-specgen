@@ -70,7 +70,9 @@
              :members     members-spec})
 
 (def meetup-request-spec
-  (ds/spec ::meetup-request (dissoc meetup :event-id :members) {:description "ミートアップリクエスト"}))
+  (ds/spec ::meetup-request (-> meetup
+                                (dissoc :event-id :members :venue)
+                                (assoc :venue-id ::venue-id)) {:description "ミートアップリクエスト"}))
 
 (def meetup-spec
   (ds/spec ::meetup meetup {:description "ミートアップレスポンス"}))
