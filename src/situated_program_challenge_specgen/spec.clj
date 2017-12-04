@@ -94,6 +94,9 @@
 (def group-spec
   (ds/spec ::group group {:description "グループレスポンス"}))
 
+(def new-group-spec
+  (ds/spec ::new-group (dissoc group :venues :meetups) {:description "新規グループレスポンス"}))
+
 (def groups-spec
   (ds/spec ::groups [group] {:description "グループスレスポンス"}))
 

@@ -1,4 +1,4 @@
-(ns situated-program-challenge-specgen.members
+(ns situated-program-challenge-specgen.routes.members
   (:require [compojure.api.sweet :refer [context GET POST]]
             [spec-tools.swagger.core :as swagger]
             [situated-program-challenge-specgen.spec :as spec]))
@@ -25,7 +25,7 @@
       :body [member-request spec/member-request-spec]
       :return spec/member-spec)
 
-    (POST "/:member-id/meetups/:meetup-id" []
+    (POST "/:member-id/meetups/:event-id" []
       :summary "ミートアップへの参加"
       :description  "メンバーがミートアップに参加申し込みをします。"
       :return spec/meetup-spec)

@@ -2,8 +2,10 @@
   (:require [compojure.api.sweet :refer [api context GET POST]]
             [muuntaja.core :as muuntaja]
             [situated-program-challenge-specgen
-             [members :refer [members-routes]]
-             [groups :refer [groups-routes]]]))
+             [log]]
+            [situated-program-challenge-specgen.routes
+             [groups :refer [groups-routes]]
+             [members :refer [members-routes]]]))
 
 (def app
   (api

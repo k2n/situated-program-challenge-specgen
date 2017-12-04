@@ -1,6 +1,10 @@
-(ns situated-program-challenge-specgen.groups
+(ns situated-program-challenge-specgen.routes.groups
   (:require [compojure.api.sweet :refer [context GET POST]]
-            [situated-program-challenge-specgen.spec :as spec]))
+            [situated-program-challenge-specgen
+             [spec :as spec]]
+            [situated-program-challenge-specgen.db
+             [db :as db]
+             [groups :as groups]]))
 
 (def groups-routes
   (context "/groups" []
@@ -16,7 +20,7 @@
       :summary "グループの登録"
       :description "新しいグループを登録します。"
       :body [group-request spec/group-request-spec]
-      :return spec/group-spec)
+      :return spec/new-group-spec)
 
     (context "/:group-id/meetups" []
       :coercion :spec
