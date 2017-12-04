@@ -1,7 +1,7 @@
 (ns situated-program-challenge-specgen.db.groups-test
   (:require [clojure.test :refer :all]
             [clojure.spec.alpha :as s]
-            [clojure.spec.test.alpha :as stest]
+            [orchestra.spec.test :as stest]
             [situated-program-challenge-specgen.fixtures :refer :all]
             [situated-program-challenge-specgen.db.db :as db]
             [situated-program-challenge-specgen.db.groups :refer :all]))

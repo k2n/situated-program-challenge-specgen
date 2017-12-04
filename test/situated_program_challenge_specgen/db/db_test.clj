@@ -1,7 +1,7 @@
 (ns situated-program-challenge-specgen.db.db-test
   (:refer-clojure :exclude [update partition-by])
   (:require [clojure.spec.alpha :as s]
-            [clojure.spec.test.alpha :as stest]
+            [orchestra.spec.test :as stest]
             [clojure.test :refer :all]
             [honeysql.core :as sql]
             [honeysql.helpers :refer :all]
