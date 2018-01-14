@@ -15,7 +15,7 @@
                  [mount                         "0.1.11"]
                  [nilenso/honeysql-postgres     "0.2.3"]
                  [orchestra                     "2017.11.12-1"]
-                 [org.clojure/clojure           "1.9.0-RC2"]
+                 [org.clojure/clojure           "1.9.0"]
                  [org.clojure/java.jdbc         "0.7.3"]
                  [org.postgresql/postgresql     "9.4-1206-jdbc42"] 
                  [peridot                       "0.5.0"]]
