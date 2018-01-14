@@ -56,4 +56,19 @@
         :summary "会場の登録"
         :description "会場を登録します。"
         :body [venue-request spec/venue-request-spec]
-        :return spec/venue-spec))))
+        :return spec/venue-spec))
+
+    (context "/:group-id/online-venues" []
+      :coercion :spec
+      :tags ["online-venues"]
+
+      (GET "/" []
+        :summary "オンライン会場一覧の取得"
+        :description "登録されているオンライン会場の一覧を取得します。"
+        :return spec/online-venues-spec)
+
+      (POST "/" []
+        :summary "オンライン会場の登録"
+        :description "オンライン会場を登録します。"
+        :body [online-venue-request spec/online-venue-request-spec]
+        :return spec/online-venue-spec))))

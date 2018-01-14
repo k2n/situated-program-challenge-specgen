@@ -12,13 +12,16 @@
    {:swagger
     {:ui "/"
      :spec "/swagger.json"
-     :data {:info {:title "Situated Program Challenge"}
+     :data {:info {:title "Situated Program Challenge"
+                   :version "0.0.2"}
             :tags [{:name "meetups"
                     :description "ミートアップエンティティ"}
                    {:name "members"
                     :description "メンバーエンティティ"}
                    {:name "venues"
                     :description "会場エンティティ"}
+                   {:name "online-venues"
+                    :description "オンライン会場エンティティ"}
                    {:name "groups"
                     :description "グループエンティティ"}]}}
     :formats (-> muuntaja/default-options
