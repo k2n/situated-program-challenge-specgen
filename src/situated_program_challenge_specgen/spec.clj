@@ -56,7 +56,7 @@
   (ds/spec ::venue-request (dissoc venue :venue-id) {:description "会場"}))
 
 (def online-venue-request-spec
-  (ds/spec ::online-venue-request (dissoc online-venue :venue-id) {:description "オンライン会場"}))
+  (ds/spec ::online-venue-request (dissoc online-venue :online-venue-id) {:description "オンライン会場"}))
 
 (def venues-spec
   (ds/spec ::venues [venue] {:description "会場"}))
